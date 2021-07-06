@@ -1,0 +1,7 @@
+data/*.grimoire
+data/backup/*.backup
+grimoire.cmd                              
+icon/icon - Copy.png                      
+icon/icon.png                      
+icon/icon2 as Smart Object-1.psd          
+dist/

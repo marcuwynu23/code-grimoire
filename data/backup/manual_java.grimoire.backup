@@ -1,0 +1,258 @@
+=========================================================
+Java Code Sheet
+=========================================================
+COMPILE AND RUN JAVA PROGRAM WITH PREVIEW FEATURES
+=========================================================
+* javac --enable-preview --source=14 test.java
+* java --enable_preview test
+RUN AND INTERPRET JAVA PROGRAM SOURCE FILE WITH PREVIEW FEATURES
+* java --enable-preview --source=14 test.java
+
+Example:
+ 
+public class test{
+	public static void main(String[] args){
+		String content;
+		content = """
+		    Hello World!
+		""";
+		System.out.println(content);
+	}
+}
+=========================================================
+READ TXT FILES IN UTF-8 USING NEW INPUT/OUTPUT MODULES
+=========================================================
+ Example:
+import java.nio.file.*;
+
+
+public class test{
+	public static void main(String[] args){
+		var filePath = "test.java";
+		String content = null;
+		try{
+			content = new String(Files.readAllBytes(Paths.get(filePath)));
+		}catch(java.io.IOException ex){
+			System.out.println(ex);
+		}
+		System.out.println(content);
+	}
+}
+========================================================
+WRITE STRING TO TXT FILE
+========================================================
+Example:
+import java.io.FileWriter;
+public class test{
+  public static void main(String[] args){
+     var mywriter = new FileWriter(fileBackupPath);
+     mywriter.write("content");
+     mywriter.close();
+  }
+}
+
+
+========================================================
+CREATE SERIALIZE OBJECT FILE
+========================================================
+Example:
+import java.io.FileOutputStream;
+import java.io.FileInputStream;
+import java.io.ObjectOutputStream;
+import java.io.ObjectInputStream;
+import java.io.File;
+import java.io.IOException;
+import java.io.Serializable;
+
+public class test{
+	public static void main(String[] args) throws IOException{
+		createObjFile(new SerializeObject(),"test.obj");
+		System.out.println(readObjFile("test.obj"));
+	}
+
+	public static void createObjFile(Object obj,String filePath) throws IOException{
+		var foStream = new ObjectOutputStream(new FileOutputStream(new File(filePath)));
+		foStream.writeObject(obj);
+		foStream.close();
+	}
+	public static Object readObjFile(String filePath) throws IOException{
+		var fiStream = new ObjectInputStream(new FileInputStream(new File(filePath)));
+		try{
+			Object obj = fiStream.readObject();
+			return obj;
+		}catch(ClassNotFoundException cnex){		
+			System.out.println(cnex);
+		}
+		fiStream.close();
+		return null;
+	}
+
+}
+class SerializeObject implements Serializable{}
+========================================================
+SNIPPETS
+========================================================
+CREATE SWING APPLICATION
+========================================================
+public class SwingApplication extends JFrame{
+	static class UI{
+		private static final String TITLE = "Sample Application";
+		private static final int WIDTH = 700;
+		private static final int HEIGHT = 600;
+		private static final Color BG_COLOR = new Color(12,12,12);
+		private static final Color FG_COLOR = Color.WHITE;
+	}
+	private Container ctpane;
+	public SwingApplication(){
+		setSize(UI.WIDTH,UI.HEIGHT);
+		setTitle(UI.TITLE);
+		setLocationRelativeTo(null);
+		setDefaultCloseOperation(3);
+		setComponents();
+		setComponentUI();
+		setComponentEvent();
+		setComponentLayout();
+		setVisible(true);
+	}
+	private void setComponents(){
+		ctpane = getContentPane();
+	}
+	private void setComponentUI(){
+		ctpane.setBackground(UI.BG_COLOR);
+	}
+	private void setComponentEvent(){
+		
+	}
+	private void setComponentLayout(){
+	
+	}	
+}
+=========================================================
+Tue Jul 06 19:25:59 PST 2021
+=========================================================
+COMPILING AND RUNNING JAVAFX APPLICATION
+=========================================================
+FX_MODULES_PATH="C:\\Users\\admin\\Desktop\\FTP\\javafx-sdk-11.0.2\\lib"
+FX_MODULES=javafx.controls
+BINS=dist\\project.jar
+MANIFEST=JMANIFEST.info
+SOURCES=@Jbuild\\sources.properties
+CLASSES=@Jbuild\\classes.properties
+javac -d .  --module-path  $(FX_MODULES_PATH) --add-modules $(FX_MODULES) $(SOURCES)
+jar -cvfm $(BINS) $(MANIFEST) $(CLASSES)
+
+java -jar --module-path $(FX_MODULES_PATH) --add-modules $(FX_MODULES) $(BINS)
+=========================================================
+Tue Jul 06 19:37:01 PST 2021
+=========================================================
+JAVA PROJECT BUILDING MAKEFILE SNIPPETS
+=========================================================
+# Manifest
+MANIFEST_TYPE=Main-Class
+# MANIFEST_TYPE=Class-Path
+MANIFEST_VALUE=com.peculiar.testFX.Main
+# MANIFEST_VALUE=lib\peculiar-gui-v0.0.4.jar
+PACKAGE=com.peculiar.testFX
+JAVA_FILE=Main.java
+# class root folder
+CLASS_ROOT=com
+
+all: compile-run clean-classes
+	echo done.
+compile-run:
+	echo Compiling...
+	jpb --compile
+	echo Running Application...
+	jpb --run
+
+add-to-Manifest:
+		jpb --aim  $(MANIFEST_TYPE) $(MANIFEST_VALUE)
+add-package:
+	jpb --md $(PACKAGE)
+add-class:
+	jpb --cf $(PACKAGE) $(JAVA_FILE)
+test:
+	jpb --test
+clean-classes:
+	echo Cleaning class files...
+	rd /Q /S $(CLASS_ROOT)
+clean:
+	echo Cleaning .jar and .exe..
+	del dist\*.exe
+	del dist\*.jar
+
+#FX Project
+FX_MODULES_PATH="C:\\Users\\admin\\Desktop\\FTP\\javafx-sdk-11.0.2\\lib"
+FX_MODULES=javafx.controls
+BINS=dist\\project.jar
+MANIFEST=JMANIFEST.info
+SOURCES=@Jbuild\\sources.properties
+CLASSES=@Jbuild\\classes.properties
+
+native-compile:
+	javac -d .  --module-path  $(FX_MODULES_PATH) --add-modules $(FX_MODULES) $(SOURCES)
+	jar -cvfm $(BINS) $(MANIFEST) $(CLASSES)
+native-run:
+	java -jar --module-path $(FX_MODULES_PATH) --add-modules $(FX_MODULES) $(BINS)
+=========================================================
+Tue Jul 06 20:29:04 PST 2021
+=========================================================
+HOW TO ADD LINE NUMBERS IN JTEXTAREA
+=========================================================
+import java.awt.*;
+import javax.swing.*;
+import javax.swing.event.*;
+import javax.swing.text.Element;
+public class test extends JFrame {
+   private static JTextArea textArea;
+   private static JTextArea lineArea;
+   private JScrollPane jsp;
+   public test() {
+      setTitle("LineNumberTextArea Test");
+      jsp = new JScrollPane();
+      textArea = new JTextArea();
+      lineArea = new JTextArea("1");
+      lineArea.setBackground(Color.LIGHT_GRAY);
+      lineArea.setEditable(false);
+      textArea.getDocument().addDocumentListener(new MyDocumentListener(textArea,lineArea));
+      jsp.getViewport().add(textArea);
+      jsp.setRowHeaderView(lineArea);
+      add(jsp);
+      setSize(400, 275);
+      setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
+      setLocationRelativeTo(null);
+      setVisible(true);
+   }
+   public static void main(String[] args) {
+      new test();
+   }
+}
+class MyDocumentListener implements DocumentListener{
+	private JTextArea textArea,lineArea;
+	public MyDocumentListener(JTextArea textArea,JTextArea lineArea){
+		this.textArea = textArea;
+		this.lineArea = lineArea;
+	}
+	public String getText() {
+		int caretPosition = textArea.getDocument().getLength();
+		Element root = textArea.getDocument().getDefaultRootElement();
+		String text = "1" + System.getProperty("line.separator");
+		for(int i = 2; i < root.getElementIndex(caretPosition) + 2; i++) {
+			text += i + System.getProperty("line.separator");
+		}
+		return text;
+	}
+	@Override
+	public void changedUpdate(DocumentEvent de) {
+		lineArea.setText(getText());
+	}
+	@Override
+	public void insertUpdate(DocumentEvent de) {
+		lineArea.setText(getText());
+	}
+	@Override
+	public void removeUpdate(DocumentEvent de) {
+		lineArea.setText(getText());
+	}
+}
+=========================================================

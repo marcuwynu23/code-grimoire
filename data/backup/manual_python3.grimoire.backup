@@ -1,0 +1,19 @@
+
+=========================================================
+Python3 Code Sheet
+=========================================================
+WRITE AND READ FILE
+=========================================================
+def readfile(filePath):
+	with open(filePath,'r+') as f:
+		content = f.read();
+		return content;
+print(readfile("test.java"))
+
+
+def writefile(content,filePath):
+	with open(filePath,'w+') as f:
+		f.write(content);
+		return True
+
+=========================================================
