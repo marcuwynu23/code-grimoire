@@ -3,8 +3,8 @@
 # MANIFEST_TYPE=Class-Path
 # MANIFEST_VALUE=com.github.peculiar.codeManual.Main
 # MANIFEST_VALUE=lib\peculiar-gui-v0.0.4.jar
-# PACKAGE=com.github.peculiar.codeGrimoire.io
-# JAVA_FILE=FileBackup.java
+PACKAGE=com.github.peculiar.codeGrimoire.view
+JAVA_FILE=MyTextArea.java
 # class root folder
 CLASS_ROOT=com
 

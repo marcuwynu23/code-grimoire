@@ -1,5 +1,5 @@
-=========================================================
-Java Code Sheet
+
+JAVA CODE CHEAT SHEET
 =========================================================
 COMPILE AND RUN JAVA PROGRAM WITH PREVIEW FEATURES
 =========================================================
@@ -19,6 +19,8 @@ public class test{
 		System.out.println(content);
 	}
 }
+
+
 =========================================================
 READ TXT FILES IN UTF-8 USING NEW INPUT/OUTPUT MODULES
 =========================================================
@@ -38,6 +40,8 @@ public class test{
 		System.out.println(content);
 	}
 }
+
+
 ========================================================
 WRITE STRING TO TXT FILE
 ========================================================
@@ -90,6 +94,10 @@ public class test{
 }
 class SerializeObject implements Serializable{}
 ========================================================
+
+
+
+
 SNIPPETS
 ========================================================
 CREATE SWING APPLICATION
@@ -128,6 +136,9 @@ public class SwingApplication extends JFrame{
 	}	
 }
 =========================================================
+
+
+
 Tue Jul 06 19:25:59 PST 2021
 =========================================================
 COMPILING AND RUNNING JAVAFX APPLICATION
@@ -143,6 +154,9 @@ jar -cvfm $(BINS) $(MANIFEST) $(CLASSES)
 
 java -jar --module-path $(FX_MODULES_PATH) --add-modules $(FX_MODULES) $(BINS)
 =========================================================
+
+
+
 Tue Jul 06 19:37:01 PST 2021
 =========================================================
 JAVA PROJECT BUILDING MAKEFILE SNIPPETS
@@ -195,6 +209,8 @@ native-compile:
 native-run:
 	java -jar --module-path $(FX_MODULES_PATH) --add-modules $(FX_MODULES) $(BINS)
 =========================================================
+
+
 Tue Jul 06 20:29:04 PST 2021
 =========================================================
 HOW TO ADD LINE NUMBERS IN JTEXTAREA
@@ -255,4 +271,53 @@ class MyDocumentListener implements DocumentListener{
 		lineArea.setText(getText());
 	}
 }
+=========================================================
+
+Tue Jul 06 22:34:25 PST 2021
+
+=========================================================
+JAVAFX SIMPLE APPLICATION SNIPPETS
+=========================================================
+import javafx.application.Application;
+import javafx.scene.Scene; 
+import javafx.scene.layout.VBox; 
+import javafx.scene.text.Text; 
+import javafx.stage.Stage;
+
+public class Main extends Application { 
+	public static void main(String[] args){
+		Application.launch(args); 
+	}
+	@Override 
+	public void start(Stage stage) { 
+		Text text = new Text("Hello World"); 
+		VBox root = new VBox(); 
+		root.getChildren().add(text); 
+		root.setMinSize(350, 250);
+		Scene scene = new Scene(root);
+		stage.setX(100); 
+		stage.setY(200); 
+		stage.setMinHeight(300); 
+		stage.setMinWidth(400);
+		stage.setScene(scene); 
+		stage.setTitle("Your first JavaFX Example"); 
+		stage.show();
+	}
+}
+=========================================================
+Thu Jul 08 10:59:43 PST 2021
+=========================================================
+ADD HIGHLIGHTER INTO TEXT COMPONENT
+=========================================================
+var highlighter = textArea1.getHighlighter();
+var painter = new DefaultHighlighter.DefaultHighlightPainter(new Color(225,225,225,100));
+int p1 = 0,p2 = 0; 
+try{
+    p1 = textArea1.getSelectionStart();
+    p2 = textArea1.getSelectionEnd();
+    highlighter.addHighlight(p1,p2,painter);
+}catch(BadLocationException ex){
+   System.out.println(ex);
+}
+
 =========================================================
