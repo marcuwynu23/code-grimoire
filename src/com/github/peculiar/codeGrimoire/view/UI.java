@@ -2,10 +2,11 @@ package com.github.peculiar.codeGrimoire.view;
 
 public class UI{
 	protected static final String APP_TITLE = "Code Grimoire";
-	protected static final String[] COMBO_LIST ={
+	protected static final int WIDTH = 1200, HEIGHT = 700;
+  protected static final String[] COMBO_LIST ={
 		"Development Logs","Java Manual and Snippets","Python3 Manual and Snippets",
 		"C Manual and Snippets","C++ Manual and Snippets","SQLite3 Manual and Snippets",
-		"Project Journal","Project Ideas","Sites Account"
+		"Project Journal","Project Ideas and Video Topics ","Sites Account"
 	};
 	protected static final String[] BTN_NAMES = {
 		"Edit Content","Update Content","+",
@@ -14,9 +15,9 @@ public class UI{
 		"Copy"
 	};
 	protected static final String[] OBJ_FILE_NAME_LIST = {
-		"devLogs.grimoire","manual_java.grimoire","manual_python3.grimoire",
-		"manual_c.grimoire","manual_c++.grimoire",
-		"manual_sqlite3.grimoire","journal.grimoire",
+		"devLogs.grimoire","java.grimoire","python3.grimoire",
+		"c.grimoire","c++.grimoire",
+		"sqlite3.grimoire","journal.grimoire",
 		"projectIdeas.grimoire","sitesAccount.grimoire"
 	};
 

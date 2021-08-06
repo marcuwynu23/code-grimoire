@@ -1,14 +1,17 @@
 package com.github.peculiar.codeGrimoire.view; 
 import java.awt.*;
+import java.awt.event.*;
 import javax.swing.*;
 import javax.swing.event.*;
 import javax.swing.text.*;
+import javax.swing.undo.*;
 import com.github.peculiar.codeGrimoire.io.FileHandler;
 import com.github.peculiar.codeGrimoire.io.FileBackup;
 import com.github.peculiar.codeGrimoire.model.ContentData;
 
 public class View extends JFrame{
-	private JPanel areaPnl,optionPnl,statusPnl;
+	private JPanel optionPnl,statusPnl;
+	private JSplitPane jspn;
 	private MyTextArea textArea1,textArea2;
 	private static MyTextArea lines1;
 	private static MyTextArea lines2;
@@ -19,8 +22,9 @@ public class View extends JFrame{
 	private MyButton addHighlighterBtn;
 	private MyButton clearBtn;
 	private MyButton copyBtn;
+	private MyButton exitBtn;
 	private JComboBox list;
-	private int fontSize = 13;
+	private int fontSize = 16;
 
 	public View(){
 		try{
@@ -28,8 +32,8 @@ public class View extends JFrame{
 		}catch(Exception ex){
 			System.out.println(ex);
 		}
-		setSize(900,700);
-		setMinimumSize(new Dimension(900,700));
+		setSize(UI.WIDTH,UI.HEIGHT);
+		setMinimumSize(new Dimension(UI.WIDTH,UI.HEIGHT));
 		setTitle(UI.APP_TITLE);
 		setIconImage(new ImageIcon("icon\\icon.png").getImage());
 		setLocationRelativeTo(null);
@@ -42,7 +46,7 @@ public class View extends JFrame{
 
 	}
 	private void setComponents(){
-		areaPnl = new JPanel();
+		jspn = new JSplitPane();
 		optionPnl = new JPanel();
 		statusPnl = new JPanel();
 		textArea1 = new MyTextArea();
@@ -60,23 +64,28 @@ public class View extends JFrame{
 		addHighlighterBtn = new MyButton(UI.BTN_NAMES[7]);
 		clearBtn = new MyButton(UI.BTN_NAMES[8]);
 		copyBtn = new MyButton(UI.BTN_NAMES[9]);
+		exitBtn = new MyButton("X");
 		list = new JComboBox(UI.COMBO_LIST);
 
 
 	}
 	private void setComponentUI(){
-		var BG_COLOR = new Color(45,45,45);
-		var FG_COLOR = Color.WHITE;
-		var BTN_BG = new Color(40,40,40);
 		
-		areaPnl.setBackground(BG_COLOR);
+		jspn.setBorder(BorderFactory.createLineBorder(new Color(30,30,30),2));
+		jspn.setDividerSize(4);
+		jspn.setDividerLocation(UI.WIDTH);
+
+		var BG_COLOR = new Color(32,32,32);
+		var FG_COLOR = Color.WHITE;
+		var BTN_BG = new Color(30,30,30);
+		
 		statusPnl.setBackground(BG_COLOR);
 		optionPnl.setBackground(BG_COLOR);
 
-		textArea1.setUIColor(BG_COLOR,Color.CYAN,FG_COLOR,Color.CYAN,new Color(225,225,225,100));
-		textArea2.setUIColor(BG_COLOR,Color.CYAN,FG_COLOR,Color.CYAN,new Color(225,225,225,100));
-		lines1.setUIColor(BTN_BG,Color.WHITE,FG_COLOR,Color.CYAN,new Color(225,225,225,100));
-		lines2.setUIColor(BTN_BG,Color.WHITE,FG_COLOR,Color.CYAN,new Color(225,225,225,100));
+		textArea1.setUIColor(BG_COLOR,Color.GREEN,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
+		textArea2.setUIColor(BG_COLOR,Color.GREEN,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
+		lines1.setUIColor(new Color(40,40,40),Color.WHITE,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
+		lines2.setUIColor(new Color(40,40,40),Color.WHITE,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
 
 		textArea1.setUI(new Font("Consolas",0,fontSize),new Insets(2,12,2,2),4,true,true);
 		textArea2.setUI(new Font("Consolas",0,fontSize),new Insets(2,12,2,2),4,true,true);
@@ -87,16 +96,18 @@ public class View extends JFrame{
 		var btnFontSize = 12;
 		list.setFont(new Font(fontFamily,0,btnFontSize));
 		
-		editBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[1]);
-		updateBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[2]);
-		zminBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[3]);
-		zplusBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[4]);
-		selectBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[5]);
-		insertDivBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[6]);
-		insertDateBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[7]);
-		addHighlighterBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[8]);
-		clearBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[9]);
-		copyBtn.setUI(BG_COLOR,FG_COLOR,false,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[10]);
+		editBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[1]);
+		updateBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[2]);
+		zminBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[3]);
+		zplusBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[4]);
+		selectBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[5]);
+		insertDivBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[6]);
+		insertDateBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[7]);
+		addHighlighterBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[8]);
+		clearBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[9]);
+		copyBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[10]);
+
+		exitBtn.setBackground(Color.RED);
 
 		textArea1.setEditable(false);
 		lines1.setEditable(false);
@@ -108,29 +119,30 @@ public class View extends JFrame{
 		textArea2.getDocument().addDocumentListener(new MyDocumentListener(textArea2,lines2));
 
 		list.setToolTipText(UI.TOOL_TIPS[0]);
+
+		
 	}
 
 
 
 	private void setComponentsLayout(Container ctnPane){
-		ctnPane.setLayout(new BorderLayout());
-		ctnPane.add(areaPnl,BorderLayout.CENTER);
-		ctnPane.add(optionPnl,BorderLayout.NORTH);
-		ctnPane.add(statusPnl,BorderLayout.SOUTH);
 
-		areaPnl.setLayout(new BorderLayout());
+		
+
 		var jsp1 = new JScrollPane();
+		jsp1.setBorder(BorderFactory.createLineBorder(new Color(45,45,45),1));
 		jsp1.getViewport().add(textArea1);
 		jsp1.setRowHeaderView(lines1);
-		areaPnl.add(jsp1,BorderLayout.CENTER);
+		jspn.add(JSplitPane.LEFT,jsp1);
 
 		var jsp2 = new JScrollPane();
+		jsp2.setBorder(BorderFactory.createLineBorder(new Color(45,45,45),1));
 		jsp2.getViewport().add(textArea2);
 		jsp2.setRowHeaderView(lines2);
 		jsp2.setPreferredSize(new Dimension(1000-550,700));;
-		areaPnl.add(jsp2,BorderLayout.EAST);
+		jspn.add(JSplitPane.RIGHT,jsp2);
 
-		optionPnl.setLayout(new FlowLayout(FlowLayout.LEFT));
+		optionPnl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		optionPnl.add(list);
 		optionPnl.add(zplusBtn);
 		optionPnl.add(zminBtn);
@@ -142,6 +154,12 @@ public class View extends JFrame{
 		optionPnl.add(copyBtn);
 		optionPnl.add(editBtn);
 		optionPnl.add(updateBtn);
+		optionPnl.add(exitBtn);
+
+		ctnPane.setLayout(new BorderLayout());
+		ctnPane.add(jspn,BorderLayout.CENTER);
+		ctnPane.add(optionPnl,BorderLayout.SOUTH);
+		ctnPane.add(statusPnl,BorderLayout.NORTH);
 
 	}
 	private void readTopicContent(int topicIndex){
@@ -176,14 +194,14 @@ public class View extends JFrame{
 		readTopicContent(list.getSelectedIndex());
 		list.addActionListener(e->{
 			textArea1.setEditable(false);
-			textArea1.setForeground(Color.CYAN);
+			textArea1.setForeground(Color.GREEN);
 			readTopicContent(list.getSelectedIndex());
 		});
 		updateBtn.addActionListener(e->{
 			var content =(String) textArea1.getText();
 			updateTopicContent(list.getSelectedIndex(),content);
 			textArea1.setEditable(false);
-			textArea1.setForeground(Color.CYAN);
+			textArea1.setForeground(Color.GREEN);
 		});
 		editBtn.addActionListener(e->{
 			textArea1.setEditable(true);
@@ -228,6 +246,7 @@ public class View extends JFrame{
 				System.out.println(ex);
 			}
 		});
+
 		clearBtn.addActionListener(e->{
 			textArea2.setText("");
 		});
@@ -235,6 +254,45 @@ public class View extends JFrame{
 			textArea2.selectAll();
 			textArea2.copy();
 		});
+
+
+		final UndoManager undoManager = new UndoManager();
+		textArea1.getDocument().addUndoableEditListener(undoManager);
+		textArea1.addKeyListener(new KeyAdapter(){
+			@Override
+			public void keyTyped(KeyEvent e){
+				try{
+					if(e.getKeyChar() == 26){
+						undoManager.undo();
+					}
+					if(e.getKeyChar() == 25){
+						undoManager.redo();
+					}
+				}catch(Exception ex){
+					
+				}
+			}
+		});
+
+		textArea2.getDocument().addUndoableEditListener(undoManager);
+		textArea2.addKeyListener(new KeyAdapter(){
+			@Override
+			public void keyTyped(KeyEvent e){
+				try{
+					if(e.getKeyChar() == 26){
+						undoManager.undo();
+					}
+					if(e.getKeyChar() == 25){
+						undoManager.redo();
+					}
+				}catch(Exception ex){
+					
+				}
+			}
+		});
+
+
+		exitBtn.addActionListener(e-> System.exit(0));
 	}
 }
 
