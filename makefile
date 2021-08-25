@@ -8,13 +8,22 @@ JAVA_FILE=MyTextArea.java
 # class root folder
 CLASS_ROOT=com
 
+
+ICON=icon.png
+ICON_PATH=src\com\github\peculiar\codeGrimoire
+ICON_PACKAGE=com\github\peculiar\codeGrimoire
+
 all: compile-run clean-classes
 	echo done.
 compile-run:
 	echo Compiling...
 	jpb --compile
+	xcopy /Y $(ICON_PATH)\$(ICON) $(ICON_PACKAGE)
+	jar -uf dist\project.jar $(ICON_PACKAGE)\$(ICON)
 	echo Running Application...
 	jpb --run
+
+
 
 add-to-Manifest:
 		jpb --aim  $(MANIFEST_TYPE) $(MANIFEST_VALUE)

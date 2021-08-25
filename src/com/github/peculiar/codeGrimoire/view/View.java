@@ -22,6 +22,7 @@ public class View extends JFrame{
 	private MyButton addHighlighterBtn;
 	private MyButton clearBtn;
 	private MyButton copyBtn;
+	private MyButton printBtn;
 	private MyButton exitBtn;
 	private JComboBox list;
 	private int fontSize = 16;
@@ -35,7 +36,7 @@ public class View extends JFrame{
 		setSize(UI.WIDTH,UI.HEIGHT);
 		setMinimumSize(new Dimension(UI.WIDTH,UI.HEIGHT));
 		setTitle(UI.APP_TITLE);
-		setIconImage(new ImageIcon("icon\\icon.png").getImage());
+		setIconImage(Toolkit.getDefaultToolkit().getImage(getClass().getResource(UI.ICON_PATH)));
 		setLocationRelativeTo(null);
 		setDefaultCloseOperation(3);
 		setVisible(true);
@@ -64,28 +65,30 @@ public class View extends JFrame{
 		addHighlighterBtn = new MyButton(UI.BTN_NAMES[7]);
 		clearBtn = new MyButton(UI.BTN_NAMES[8]);
 		copyBtn = new MyButton(UI.BTN_NAMES[9]);
+		printBtn = new MyButton("Print");
 		exitBtn = new MyButton("X");
 		list = new JComboBox(UI.COMBO_LIST);
 
 
 	}
 	private void setComponentUI(){
-		
-		jspn.setBorder(BorderFactory.createLineBorder(new Color(30,30,30),2));
+
+		jspn.setBorder(BorderFactory.createLineBorder( new Color(50,50,50),12));
 		jspn.setDividerSize(4);
 		jspn.setDividerLocation(UI.WIDTH);
 
-		var BG_COLOR = new Color(32,32,32);
+		var BG_COLOR = new Color(50,50,50);
 		var FG_COLOR = Color.WHITE;
-		var BTN_BG = new Color(30,30,30);
-		
+		var BTN_BG = new Color(40,40,40);
+
+		jspn.setBackground(BG_COLOR);
 		statusPnl.setBackground(BG_COLOR);
 		optionPnl.setBackground(BG_COLOR);
 
-		textArea1.setUIColor(BG_COLOR,Color.GREEN,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
-		textArea2.setUIColor(BG_COLOR,Color.GREEN,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
-		lines1.setUIColor(new Color(40,40,40),Color.WHITE,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
-		lines2.setUIColor(new Color(40,40,40),Color.WHITE,FG_COLOR,Color.GREEN,new Color(225,225,225,100));
+		textArea1.setUIColor(BG_COLOR,new Color(69,246,122),FG_COLOR,new Color(69,246,122),new Color(225,225,225,100));
+		textArea2.setUIColor(BG_COLOR,new Color(69,246,122),FG_COLOR,new Color(69,246,122),new Color(225,225,225,100));
+		lines1.setUIColor(new Color(45,45,45),Color.WHITE,FG_COLOR,new Color(69,246,122),new Color(225,225,225,100));
+		lines2.setUIColor(new Color(45,45,45),Color.WHITE,FG_COLOR,new Color(69,246,122),new Color(225,225,225,100));
 
 		textArea1.setUI(new Font("Consolas",0,fontSize),new Insets(2,12,2,2),4,true,true);
 		textArea2.setUI(new Font("Consolas",0,fontSize),new Insets(2,12,2,2),4,true,true);
@@ -106,6 +109,7 @@ public class View extends JFrame{
 		addHighlighterBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[8]);
 		clearBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[9]);
 		copyBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[10]);
+		printBtn.setUI(BTN_BG,FG_COLOR,new Font(fontFamily,0,btnFontSize),UI.TOOL_TIPS[11]);
 
 		exitBtn.setBackground(Color.RED);
 
@@ -119,28 +123,25 @@ public class View extends JFrame{
 		textArea2.getDocument().addDocumentListener(new MyDocumentListener(textArea2,lines2));
 
 		list.setToolTipText(UI.TOOL_TIPS[0]);
-
-		
 	}
 
 
 
 	private void setComponentsLayout(Container ctnPane){
-
-		
-
+		jspn.setOrientation(JSplitPane.VERTICAL_SPLIT);
 		var jsp1 = new JScrollPane();
 		jsp1.setBorder(BorderFactory.createLineBorder(new Color(45,45,45),1));
 		jsp1.getViewport().add(textArea1);
 		jsp1.setRowHeaderView(lines1);
-		jspn.add(JSplitPane.LEFT,jsp1);
+		jspn.setLeftComponent(jsp1);
+
 
 		var jsp2 = new JScrollPane();
 		jsp2.setBorder(BorderFactory.createLineBorder(new Color(45,45,45),1));
 		jsp2.getViewport().add(textArea2);
 		jsp2.setRowHeaderView(lines2);
 		jsp2.setPreferredSize(new Dimension(1000-550,700));;
-		jspn.add(JSplitPane.RIGHT,jsp2);
+		jspn.setRightComponent(jsp2);
 
 		optionPnl.setLayout(new FlowLayout(FlowLayout.RIGHT));
 		optionPnl.add(list);
@@ -149,17 +150,18 @@ public class View extends JFrame{
 		optionPnl.add(insertDateBtn);
 		optionPnl.add(insertDivBtn);
 		optionPnl.add(addHighlighterBtn);
-		optionPnl.add(selectBtn);
-		optionPnl.add(clearBtn);
-		optionPnl.add(copyBtn);
 		optionPnl.add(editBtn);
 		optionPnl.add(updateBtn);
+		optionPnl.add(clearBtn);
+		optionPnl.add(selectBtn);
+		optionPnl.add(copyBtn);
+		optionPnl.add(printBtn);
 		optionPnl.add(exitBtn);
 
 		ctnPane.setLayout(new BorderLayout());
 		ctnPane.add(jspn,BorderLayout.CENTER);
-		ctnPane.add(optionPnl,BorderLayout.SOUTH);
-		ctnPane.add(statusPnl,BorderLayout.NORTH);
+		ctnPane.add(optionPnl,BorderLayout.NORTH);
+		ctnPane.add(statusPnl,BorderLayout.SOUTH);
 
 	}
 	private void readTopicContent(int topicIndex){
@@ -194,14 +196,14 @@ public class View extends JFrame{
 		readTopicContent(list.getSelectedIndex());
 		list.addActionListener(e->{
 			textArea1.setEditable(false);
-			textArea1.setForeground(Color.GREEN);
+			textArea1.setForeground(new Color(69,246,122));
 			readTopicContent(list.getSelectedIndex());
 		});
 		updateBtn.addActionListener(e->{
 			var content =(String) textArea1.getText();
 			updateTopicContent(list.getSelectedIndex(),content);
 			textArea1.setEditable(false);
-			textArea1.setForeground(Color.GREEN);
+			textArea1.setForeground(new Color(69,246,122));
 		});
 		editBtn.addActionListener(e->{
 			textArea1.setEditable(true);
@@ -292,6 +294,18 @@ public class View extends JFrame{
 		});
 
 
+		printBtn.addActionListener(e-> {
+			try{
+				textArea2.setForeground(Color.BLACK);
+				textArea2.setBackground(Color.WHITE);
+				textArea2.print();
+				textArea2.setForeground(new Color(69,246,122));
+				textArea2.setBackground(new Color(50,50,50));
+
+			}catch(Exception ex){
+				JOptionPane.showMessageDialog(this,ex);
+			}
+		});
 		exitBtn.addActionListener(e-> System.exit(0));
 	}
 }
