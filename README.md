@@ -1,5 +1,5 @@
 # Code Grimoire
-
+Local Text/Note Storage Application for minimalist Programmer
 ## Contributing
 How to Contribute to this Project Repository:
 1. Fork the Project
